@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+        #allmap{width:100%;height:100%;}
+        p{margin-left:5px; font-size:14px;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rU83LRkDVPQ24uKoEW7zWssRXAQ4hwHv"></script>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="http://oevwfwaro.bkt.clouddn.com/data.js"></script>
+    <title>北京共享单车标记图</title>
+</head>
+<body>
+    <div id="allmap"></div>
+    <p>北京共享单车标记图</p>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能    
+    map = new BMap.Map("allmap");
+    map.enableScrollWheelZoom();                        //启用滚轮放大缩小
+    map.centerAndZoom(new BMap.Point(116.377298,39.91978), 17);
+    var data_info = [[74.438,39.006,"A"],[74.932,38.382,"B"],[75.402,37.879,"C"],[75.24,38.777,"D"]];
+    var opts = {
+                width : 250,     // 信息窗口宽度
+                height: 100,     // 信息窗口高度
+                // title : "信息窗口" , // 信息窗口标题
+                enableMessage:true//设置允许信息窗发送短息
+               };
+    if (typeof(icon_size) == "undefined") {
+        var icon_size = 24;  // 图标的大小
+    }
+
+    // 加载并显示自行车的经纬度等数据
+    if (typeof(bike_data) != "undefined") {
+        var bicycle_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20bicycle%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<bike_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(bike_data[i][0],bike_data[i][1]),{icon:bicycle_icon});  // 创建标注
+            var content = bike_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }   
+    }   
+    
+    // 中学
+    if (typeof(middle_school_data) != "undefined") { 
+        var middle_school_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20middle%20school%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<middle_school_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(middle_school_data[i][0],middle_school_data[i][1]),{icon:middle_school_icon});  // 创建标注
+            var content = middle_school_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 小学
+    if (typeof(primary_school_data) != "undefined") { 
+        var primary_school_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20primary%20school%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<primary_school_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(primary_school_data[i][0],primary_school_data[i][1]),{icon:primary_school_icon});  // 创建标注
+            var content = primary_school_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 大学
+    if (typeof(college_data) != "undefined") { 
+        var college_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20college%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<college_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(college_data[i][0],college_data[i][1]),{icon:college_icon});  // 创建标注
+            var content = college_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 公交车站台
+    if (typeof(bus_data) != "undefined") { 
+        var bus_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20bus%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<bus_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(bus_data[i][0],bus_data[i][1]),{icon:bus_icon});  // 创建标注
+            var content = bus_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 地铁站
+    if (typeof(subway_data) != "undefined") { 
+        var subway_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20subway%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<subway_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(subway_data[i][0],subway_data[i][1]),{icon:subway_icon});  // 创建标注
+            var content = subway_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 住宅区
+    if (typeof(home_data) != "undefined") { 
+        var home_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20home%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size)); 
+        for(var i=0;i<home_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(home_data[i][0],home_data[i][1]),{icon:home_icon});  // 创建标注
+            var content = home_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 写字楼
+    if (typeof(office_data) != "undefined") { 
+        var office_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20office%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));
+        for(var i=0;i<office_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(office_data[i][0],office_data[i][1]),{icon:office_icon});  // 创建标注
+            var content = office_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    // 旅游景点
+    if (typeof(travel_attraction_data) != "undefined") { 
+        var travel_attraction_icon = new BMap.Icon("http://oevwfwaro.bkt.clouddn.com/icon%20mountain%20X"+icon_size+".png", new BMap.Size(icon_size,icon_size));        
+        for(var i=0;i<travel_attraction_data.length;i++){
+            var marker = new BMap.Marker(new BMap.Point(travel_attraction_data[i][0],travel_attraction_data[i][1]),{icon:travel_attraction_icon});  // 创建标注
+            var content = travel_attraction_data[i][2];
+            map.addOverlay(marker);               // 将标注添加到地图中
+            addClickHandler(content,marker);
+        }
+    }
+
+    function addClickHandler(content,marker){
+        marker.addEventListener("click",function(e){
+            openInfo(content,e)}
+        );
+    }
+    function openInfo(content,e){
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+        map.openInfoWindow(infoWindow,point); //开启信息窗口
+    }
+    var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+    window.onload = loadJScript;  //异步加载地图
+</script>
