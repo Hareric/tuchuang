@@ -1,8 +1,5 @@
 # 使用applescript一键上传图片至Github图床
 
-### 详细教程参考该博客
-https://1ili.github.io/2018/04/12/upload-resource-to-github/
-
 
 ### applescript代码
 ``` applescript
